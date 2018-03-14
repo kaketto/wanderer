@@ -5,13 +5,12 @@ is controlled in a maze using the keyboard. Heroes and monsters have levels and
 stats depending on their levels. The goal is reach the highest level by killing
 the monsters holding the keys to the next level.
 
-## Workshop: Plan your works
+## Workshop: Plan your work
 
 ### 0. Fork this repository (under your user)
 
 ### 1. Clone the repository to your computer
 
-### 2. Go through the technical details
 
 #### How to launch the program
 
@@ -112,4 +111,3 @@ Now that you see the big picture, **go through the stories together** and think 
 - Extend the story cards with some of these points as a reminder
 
 #### 6. Start working on your first task!
-
