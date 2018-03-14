@@ -98,7 +98,7 @@ Plan your architecture. In your architecture you should consider the following c
 - GameLogic
     - current hero
     - current area
-- MainLoop
+- Main
     - handling events
     - current game
 
