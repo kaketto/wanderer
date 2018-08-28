@@ -7,7 +7,9 @@ export abstract class Character {
   protected DefendPoint: number;
   protected StrikePoint: number;
   protected level: number;
-  protected currentPos: number[]
+  protected currentPos: number[];
+  protected canvas: HTMLCanvasElement;
+  protected ctx: any;
 
   // constructor(name: string, maxHealthPoint: number, currentHealthPoint: number, DefendPoint: number, StrikePoint: number, level: number, currentPos: number[]) {
   //   this.name = name;
@@ -23,6 +25,8 @@ export abstract class Character {
     this.name = name;
     this.level = level;
     this.currentPos = currentPos;
+    this.canvas = document.querySelector('.main-canvas') as HTMLCanvasElement;
+    this.ctx = this.canvas.getContext('2d');
   }
 
   isDead(): boolean {
@@ -31,9 +35,16 @@ export abstract class Character {
     }
   }
 
+  getCurrentPos(): number[] {
+    return this.currentPos;
+  }
+
   abstract strike(): void;
 
   abstract getStarted(): void;
 
-  abstract move(): void;
+  abstract moveRight(): void;
+  abstract moveLeft(): void;
+  abstract moveUp(): void;
+  abstract moveDown(): void;
 }
