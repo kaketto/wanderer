@@ -1,7 +1,7 @@
+import { Map } from "./map";
+
 'use strict';
 
-const canvas = document.querySelector('.main-canvas') as HTMLCanvasElement;
-const ctx = canvas.getContext('2d');
-
-ctx.fillRect(10, 10, 100, 100);
-
+let level1: Map = new Map(1);
+level1.DrawAllTiles(0, 0);
+//drawWall();
