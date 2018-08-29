@@ -1,5 +1,6 @@
 'use strict';
-
+import { randomPosition, fixedWall } from "./dice";
+import { Monster } from "./monster";
 
 export class Map {
   protected name: string;
@@ -14,6 +15,8 @@ export class Map {
     this.numberOfMonsters = Math.floor(Math.random() * 3) + 3;
     this.canvas = document.querySelector('.main-canvas') as HTMLCanvasElement;
     this.ctx = this.canvas.getContext('2d');
+    this.DrawAllTiles(0, 0);
+    this.drawWall();
   }
 
   drawOneTile(x: number, y: number) {
@@ -37,12 +40,8 @@ export class Map {
     this.ctx.drawImage(image, x, y);
   }
   
-  drawWall() {
-    let numberOfWall: number = 40;
-    let randomCoordinate: number = Math.floor(Math.random() * 72);
-    for (let i:number = 0; i < numberOfWall; i++) {
-      this.drawWallItem(randomCoordinate, randomCoordinate);
-    }
+  drawWall(): void {
+    fixedWall.forEach((elem) => this.drawWallItem(elem[0], elem[1]));
   }
 }
 
