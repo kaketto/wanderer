@@ -1,8 +1,6 @@
-import { Character } from "./character";
-import { rollDice } from "./dice";
-
-
 'use strict';
+import { Character } from "./character";
+import { rollDice, fixedWall } from "./dice";
 
 export class Hero extends Character {
   
@@ -32,7 +30,7 @@ export class Hero extends Character {
   }
 
   moveRight(): void {
-    if (super.getCurrentPos()[0] === 648) {
+    if (this.currentPos[0] === 648 || (fixedWall.some((elem) => elem[0] === this.currentPos[0] + 72 && elem[1] === this.currentPos[1]))) {
       const image = document.getElementById('hero-right') as HTMLImageElement;
       this.ctx.drawImage(image, this.currentPos[0], this.currentPos[1]);
     } else {
@@ -43,7 +41,7 @@ export class Hero extends Character {
   }
 
   moveLeft(): void {
-    if (super.getCurrentPos()[0] === 0) {
+    if (this.currentPos[0] === 0 || (fixedWall.some((elem) => elem[0] === this.currentPos[0] - 72 && elem[1] === this.currentPos[1]))) {
       const image = document.getElementById('hero-left') as HTMLImageElement;
       this.ctx.drawImage(image, this.currentPos[0], this.currentPos[1]);
     } else { 
@@ -54,7 +52,7 @@ export class Hero extends Character {
   }
 
   moveUp(): void {
-    if (super.getCurrentPos()[1] === 0) {
+    if (this.currentPos[1] === 0 || (fixedWall.some((elem) => elem[0] === this.currentPos[0] && elem[1] === this.currentPos[1] - 72))) {
       const image = document.getElementById('hero-up') as HTMLImageElement;
       this.ctx.drawImage(image, this.currentPos[0], this.currentPos[1]);
     } else { 
@@ -65,7 +63,7 @@ export class Hero extends Character {
   }
 
   moveDown(): void {
-    if (super.getCurrentPos()[1] === 648) {
+    if (this.currentPos[1] === 648 || (fixedWall.some((elem) => elem[0] === this.currentPos[0] && elem[1] === this.currentPos[1] + 72))){
       const image = document.getElementById('hero-down') as HTMLImageElement;
       this.ctx.drawImage(image, this.currentPos[0], this.currentPos[1]);
     } else {  
