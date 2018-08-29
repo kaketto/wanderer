@@ -11,16 +11,6 @@ export abstract class Character {
   protected canvas: HTMLCanvasElement;
   protected ctx: any;
 
-  // constructor(name: string, maxHealthPoint: number, currentHealthPoint: number, DefendPoint: number, StrikePoint: number, level: number, currentPos: number[]) {
-  //   this.name = name;
-  //   this.maxHealthPoint = maxHealthPoint;
-  //   this.currentHealthPoint = currentHealthPoint;
-  //   this.DefendPoint = DefendPoint;
-  //   this.StrikePoint = StrikePoint;
-  //   this.level = level;
-  //   this.currentPos = currentPos;
-  // }
-
   constructor(name: string, level: number, currentPos: number[]) {
     this.name = name;
     this.level = level;
@@ -40,11 +30,5 @@ export abstract class Character {
   }
 
   abstract strike(): void;
-
   abstract getStarted(): void;
-
-  abstract moveRight(): void;
-  abstract moveLeft(): void;
-  abstract moveUp(): void;
-  abstract moveDown(): void;
 }
