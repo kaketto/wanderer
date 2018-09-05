@@ -1,82 +1,100 @@
 'use strict';
 import { Character } from "./character";
-import { rollDice, fixedWall } from "./dice";
+import { rollDice } from "./dice";
+import { newGame } from ".";
+
 
 export class Hero extends Character {
+  private imageDown: HTMLImageElement;
+  private imageUp: HTMLImageElement;
+  private imageRight: HTMLImageElement;
+  private imageLeft: HTMLImageElement;
   
-  constructor(name: string = 'Hero', level: number = 1, currentPos: number[] = [0, 0]) {
-    super(name, level, currentPos);
-    this.name = name;
-    this.level = level;
+  constructor(posX: number = 0, posY: number = 0, level: number = 1, name: string = 'Hero') {
+    super(posX, posY, level, name);
+    this.imageDown = document.getElementById('hero-down') as HTMLImageElement;
+    this.imageUp = document.getElementById('hero-up') as HTMLImageElement;
+    this.imageRight = document.getElementById('hero-right') as HTMLImageElement;
+    this.imageLeft = document.getElementById('hero-left') as HTMLImageElement;
     this.getStarted();
-    this.currentPos = currentPos;
-    this.appear(currentPos[0], currentPos[1]);
-  }
-
-  strike(): void {
-    throw new Error("Method not implemented.");
+    this.appear();
   }
 
   getStarted(): void {
-    this.maxHealthPoint = 20 + rollDice() + rollDice() + rollDice();
+    this.maxHealthPoint = 20 + rollDice() * 3;
     this.currentHealthPoint = this.maxHealthPoint;
-    this.DefendPoint = rollDice() + rollDice();
+    this.DefendPoint = 2 * rollDice();
     this.StrikePoint = 5 + rollDice();
   }
 
-  appear(x: number, y: number) {
-    const image = document.getElementById('hero-down') as HTMLImageElement;
-    this.ctx.drawImage(image, x, y);
+  appear(): void {
+    this.ctx.drawImage(this.imageDown, this.posX, this.posY);
+  }
+  
+  resetStartPos(): void {
+    this.posX = 0;
+    this.posY = 0;
+    let chanceOfRestoreHP: number = Math.random();
+    if (chanceOfRestoreHP < 0.5) {
+      this.currentHealthPoint += this.maxHealthPoint * 0.1;
+    } else if (chanceOfRestoreHP < 0.9) {
+      this.currentHealthPoint += Math.round(this.maxHealthPoint / 3);
+    } else {
+      this.currentHealthPoint = this.maxHealthPoint;
+    }
+    if (this.currentHealthPoint > this.maxHealthPoint) {
+      this.currentHealthPoint = this.maxHealthPoint;
+    }
+  }
+
+  winBattle(): void {
+    this.currentHealthPoint += rollDice();
+    if (this.currentHealthPoint > this.maxHealthPoint) {
+      this.currentHealthPoint = this.maxHealthPoint
+    }
+    this.DefendPoint += rollDice();
+    this.StrikePoint += rollDice();
+    this.level++;
   }
 
   moveRight(): void {
-    if (this.currentPos[0] === 648 || (fixedWall.some((elem) => elem[0] === this.currentPos[0] + 72 && elem[1] === this.currentPos[1]))) {
-      const image = document.getElementById('hero-right') as HTMLImageElement;
-      this.ctx.drawImage(image, this.currentPos[0], this.currentPos[1]);
+    if (this.posX === 648 || (newGame.currentWall.some((elem: number[]) => elem[0] === this.posX + 72 && elem[1] === this.posY))) {
+      this.ctx.drawImage(this.imageRight, this.posX, this.posY);
     } else {
-      const image = document.getElementById('hero-right') as HTMLImageElement;
-      this.ctx.drawImage(image, this.currentPos[0] + 72, this.currentPos[1]);
-      this.currentPos = [this.currentPos[0] + 72, this.currentPos[1]];
+      this.posX += 72;
+      this.ctx.drawImage(this.imageRight, this.posX, this.posY);
     }
   }
 
   moveLeft(): void {
-    if (this.currentPos[0] === 0 || (fixedWall.some((elem) => elem[0] === this.currentPos[0] - 72 && elem[1] === this.currentPos[1]))) {
-      const image = document.getElementById('hero-left') as HTMLImageElement;
-      this.ctx.drawImage(image, this.currentPos[0], this.currentPos[1]);
+    if (this.posX === 0 || (newGame.currentWall.some((elem: number[]) => elem[0] === this.posX - 72 && elem[1] === this.posY))) {
+      this.ctx.drawImage(this.imageLeft, this.posX, this.posY);
     } else { 
-      const image = document.getElementById('hero-left') as HTMLImageElement;
-      this.ctx.drawImage(image, this.currentPos[0] - 72, this.currentPos[1]);
-      this.currentPos = [this.currentPos[0] - 72, this.currentPos[1]];
+      this.posX -= 72;
+      this.ctx.drawImage(this.imageLeft, this.posX, this.posY);
     }
   }
 
   moveUp(): void {
-    if (this.currentPos[1] === 0 || (fixedWall.some((elem) => elem[0] === this.currentPos[0] && elem[1] === this.currentPos[1] - 72))) {
-      const image = document.getElementById('hero-up') as HTMLImageElement;
-      this.ctx.drawImage(image, this.currentPos[0], this.currentPos[1]);
+    if (this.posY === 0 || (newGame.currentWall.some((elem: number[]) => elem[0] === this.posX && elem[1] === this.posY - 72))) {
+      this.ctx.drawImage(this.imageUp, this.posX, this.posY);
     } else { 
-    const image = document.getElementById('hero-up') as HTMLImageElement;
-    this.ctx.drawImage(image, this.currentPos[0], this.currentPos[1] - 72);
-    this.currentPos = [this.currentPos[0], this.currentPos[1] - 72];
+      this.posY -= 72;
+      this.ctx.drawImage(this.imageUp, this.posX, this.posY);
     }
   }
 
   moveDown(): void {
-    if (this.currentPos[1] === 648 || (fixedWall.some((elem) => elem[0] === this.currentPos[0] && elem[1] === this.currentPos[1] + 72))){
-      const image = document.getElementById('hero-down') as HTMLImageElement;
-      this.ctx.drawImage(image, this.currentPos[0], this.currentPos[1]);
+    if (this.posX === 648 || (newGame.currentWall.some((elem: number[]) => elem[0] === this.posX && elem[1] === this.posY + 72))){
+      this.ctx.drawImage(this.imageDown, this.posX, this.posY);
     } else {  
-      const image = document.getElementById('hero-down') as HTMLImageElement;
-      this.ctx.drawImage(image, this.currentPos[0], this.currentPos[1] + 72);
-      this.currentPos = [this.currentPos[0], this.currentPos[1] + 72];
+      this.posY += 72,
+      this.ctx.drawImage(this.imageDown, this.posX, this.posY);
     }  
   }
   
   gameEnd(): void {
-    if (super.isDead) {
-      console.log(`GAME OVER`);
+      alert `GAME OVER`;
     }
-  }
 }
 
