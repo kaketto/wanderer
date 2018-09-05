@@ -2,18 +2,7 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <title>Wanderer Game</title>
-    <style>
-      .main-canvas {
-        margin: 20px;
-        border: 1px solid black;
-      }
-
-      .preload-images {
-        overflow: hidden;
-        height: 0;
-      }
-    </style>
+    <link rel="stylesheet" type="text/css" href="css/style.css">  
   </head>
   <body>
     <div class="preload-images">
@@ -26,7 +15,17 @@
       <img id="skeleton" src="img/skeleton.png">
       <img id="boss" src="img/boss.png">
     </div>
-    <canvas width="600" height="400" class="main-canvas"></canvas>
+
+    <div class="elements">
+      <canvas width="720" height="720" class="main-canvas"></canvas>
+        <ul>
+          <center><li><h1>Wanderer</h1></li>
+          <li><h2>Game statistics</h2></li></center>
+          <li><h3 id="statistics"></h3></li>
+        </ul>
+    </div>
+
     <script src="bundle.js"></script>
+
   </body>
 </html>
